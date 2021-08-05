@@ -6,12 +6,31 @@ export default defineComponent({
 
   components: { TheToaster },
 
+  // inject: ['toaster', 'config'],
+  inject: {
+    config: {
+      from: 'config',
+      default: () => ({
+        API_URL: '/api',
+      }),
+    },
+
+    toaster: {
+      from: 'toaster',
+      default: () => ({
+        toast: (message) => alert(message),
+      }),
+    },
+  },
+
   methods: {
     localToast() {
       this.$refs['localToaster'].toast('Toast');
     },
 
-    injectToast() {},
+    injectToast() {
+      this.toaster.toast('Toast');
+    },
   },
 
   template: `
