@@ -1,9 +1,11 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
-import * as dateFormatters from './utils/dateFormatters.js';
 import UserForm from './UserForm.js';
+import { dateFormattersMixin } from './mixins/dateFormattersMixin.js';
 
 export default defineComponent({
   components: { UserForm },
+
+  mixins: [dateFormattersMixin],
 
   data() {
     return {
@@ -13,10 +15,6 @@ export default defineComponent({
         lastName: 'lastName',
       },
     };
-  },
-
-  methods: {
-    ...dateFormatters,
   },
 
   template: `

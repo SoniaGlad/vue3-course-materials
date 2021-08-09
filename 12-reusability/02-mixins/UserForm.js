@@ -1,30 +1,18 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
-import { createLocalPropOptions } from './utils/createLocalPropOptions.js';
+import { localPropMixin } from './mixins/localPropMixin.js';
 import UiInput from './UiInput.js';
-
-const userLocalPropOptions = createLocalPropOptions('user', {
-  propOptions: { type: Object },
-  localName: 'localUser',
-});
 
 export default defineComponent({
   name: 'UserForm',
 
   components: { UiInput },
 
-  props: {
-    ...userLocalPropOptions.props,
-  },
-
-  data() {
-    return {
-      ...userLocalPropOptions.data(),
-    };
-  },
-
-  watch: {
-    ...userLocalPropOptions.watch,
-  },
+  mixins: [
+    localPropMixin('user', {
+      propOptions: { type: Object },
+      localName: 'localUser',
+    }),
+  ],
 
   template: `
     <form>

@@ -1,4 +1,5 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
+import { modelProxy } from './utils/modelProxy.js';
 
 export default defineComponent({
   name: 'UiInput',
@@ -8,15 +9,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
 
   computed: {
-    modelValueProxy: {
-      get() {
-        return this.modelValue;
-      },
-
-      set(newValue) {
-        this.$emit(`update:modelValue`, newValue);
-      },
-    },
+    modelValueProxy: modelProxy('modelValue'),
   },
 
   template: `<input v-model="modelValueProxy" />`,
