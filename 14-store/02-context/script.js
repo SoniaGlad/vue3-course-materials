@@ -1,4 +1,10 @@
-import { createApp } from './vendor/vue.esm-browser.js';
+import { createApp, defineComponent, h } from './vendor/vue.esm-browser.js';
 import App from './App.js';
+import { useAuthProvider } from './composables/auth.js';
 
-createApp(App).mount('#app');
+const Root = defineComponent(() => {
+  useAuthProvider();
+  return () => h(App);
+});
+
+createApp(Root).mount('#app');

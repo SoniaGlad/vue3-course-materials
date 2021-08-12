@@ -1,5 +1,5 @@
 import { defineComponent, ref } from './vendor/vue.esm-browser.js';
-import { useAuth } from './composables/useAuth.js';
+import { useAuthContext } from './composables/auth.js';
 
 export default defineComponent({
   name: 'LoginPage',
@@ -8,7 +8,7 @@ export default defineComponent({
     const email = ref('demo@email');
     const password = ref('password');
 
-    const { login } = useAuth();
+    const { login } = useAuthContext();
 
     const handleSubmit = () => {
       login(email.value, password.value).catch((error) => alert(error.message));

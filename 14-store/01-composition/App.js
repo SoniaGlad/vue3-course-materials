@@ -1,5 +1,6 @@
-import { defineComponent } from './vendor/vue.esm-browser.js';
+import { defineComponent, ref } from './vendor/vue.esm-browser.js';
 import LoginPage from './LoginPage.js';
+import { useAuth } from './composables/useAuth.js';
 
 export default defineComponent({
   name: 'App',
@@ -8,10 +9,13 @@ export default defineComponent({
     LoginPage,
   },
 
-  computed: {
-    user() {},
+  setup() {
+    const { isAuthenticated, user } = useAuth();
 
-    isAuthenticated() {},
+    return {
+      isAuthenticated,
+      user,
+    };
   },
 
   template: `
