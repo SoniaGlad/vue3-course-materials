@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import UiIcon from '@/components/UiIcon';
 
 export default {
@@ -74,10 +74,20 @@ export default {
   },
 
   watch: {
+    agendaItem: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.localAgendaItem = { ...this.agendaItem };
+      },
+    },
+
     localAgendaItem: {
       deep: true,
       handler(newValue) {
-        this.$emit('update:agenda-item', { ...newValue });
+        if (!isEqual(newValue, this.agendaItem)) {
+          this.$emit('update:agenda-item', { ...newValue });
+        }
       },
     },
   },

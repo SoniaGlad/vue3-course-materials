@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, isEqual } from 'lodash-es';
 import MeetupAgendaItemForm from './MeetupAgendaItemForm';
 
 // Use negative IDs so it won't conflict with real id
@@ -80,15 +80,25 @@ export default {
 
   data() {
     return {
-      localMeetup: cloneDeep(this.meetup),
+      localMeetup: null,
     };
   },
 
   watch: {
+    meetup: {
+      deep: true,
+      immediate: true,
+      handler() {
+        this.localMeetup = cloneDeep(this.meetup);
+      },
+    },
+
     localMeetup: {
       deep: true,
       handler(newValue) {
-        this.$emit('update:meetup', cloneDeep(newValue));
+        if (!isEqual(newValue, this.meetup)) {
+          this.$emit('update:meetup', cloneDeep(newValue));
+        }
       },
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <ui-container class="page-meetup-form">
-    <meetup-form :meetup="meetup" @submit="meetup = $event" />
+    <meetup-form v-model:meetup="meetup" />
     <hr />
     <button @click="updateMeetup">Update Meetup</button>
     <pre><code>{{ meetup }}</code></pre>

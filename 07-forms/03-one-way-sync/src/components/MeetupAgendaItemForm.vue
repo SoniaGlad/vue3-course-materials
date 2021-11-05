@@ -41,8 +41,6 @@
         <textarea v-model="localAgendaItem.description" class="form-control"></textarea>
       </div>
     </div>
-
-    <button type="button" @click="handleSave">Save</button>
   </div>
 </template>
 
@@ -75,9 +73,12 @@ export default {
     };
   },
 
-  methods: {
-    handleSave() {
-      this.$emit('update:agenda-item', { ...this.localAgendaItem });
+  watch: {
+    localAgendaItem: {
+      deep: true,
+      handler(newValue) {
+        this.$emit('update:agenda-item', { ...newValue });
+      },
     },
   },
 };

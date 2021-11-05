@@ -1,5 +1,5 @@
 <template>
-  <form class="meetup-form" @submit.prevent="handleSubmit">
+  <form class="meetup-form">
     <div class="meetup-form__content">
       <fieldset class="meetup-form__section">
         <div class="form-group">
@@ -75,13 +75,22 @@ export default {
   },
 
   emits: {
-    submit: null,
+    'update:meetup': null,
   },
 
   data() {
     return {
       localMeetup: cloneDeep(this.meetup),
     };
+  },
+
+  watch: {
+    localMeetup: {
+      deep: true,
+      handler(newValue) {
+        this.$emit('update:meetup', cloneDeep(newValue));
+      },
+    },
   },
 
   methods: {
@@ -92,10 +101,6 @@ export default {
 
     removeAgendaItem(index) {
       this.localMeetup.agenda.splice(index, 1);
-    },
-
-    handleSubmit() {
-      this.$emit('submit', cloneDeep(this.localMeetup));
     },
   },
 };
