@@ -1,4 +1,4 @@
-import * as dateFormatters from './dateFormatters.js';
+import * as dateFormatters from '../composables/dateFormatters.js';
 
 export const dateFormattersMixin = {
   methods: {

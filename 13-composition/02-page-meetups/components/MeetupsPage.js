@@ -1,21 +1,15 @@
-import { defineComponent } from '../vendor/vue.esm-browser.js';
+import { defineComponent, ref, computed, onMounted } from '../vendor/vue.esm-browser.js';
 import UiRadioGroup from './UiRadioGroup.js';
 import MeetupsList from './MeetupsList.js';
 import UiContainer from './UiContainer.js';
 import MeetupsCalendar from './MeetupsCalendar.js';
 import UiAlert from './UiAlert.js';
 import UiButtonGroup from './UiButtonGroup.js';
-
-const fetchMeetups = () => fetch('./api/meetups.json').then((res) => res.json());
+import { useMeetupsFetch } from '../composables/useMeetupsFetch.js';
+import { useMeetupsFilter } from '../composables/useMeetupsFilter.js';
 
 export default defineComponent({
   name: 'MeetupsPage',
-
-  dateFilterOptions: [
-    { text: 'Все', value: 'all' },
-    { text: 'Прошедшие', value: 'past' },
-    { text: 'Ожидаемые', value: 'future' },
-  ],
 
   components: {
     MeetupsList,
@@ -26,67 +20,36 @@ export default defineComponent({
     UiAlert,
   },
 
-  data() {
-    return {
-      meetups: null,
+  setup() {
+    const { meetups } = useMeetupsFetch();
+    const { filter, filteredMeetups, dateFilterOptions } = useMeetupsFilter(meetups);
 
-      filter: {
-        date: 'all',
-        participation: 'all',
-        search: '',
-      },
+    const view = ref('list');
 
-      view: 'list',
-    };
-  },
-
-  computed: {
-    filteredMeetups() {
-      if (!this.meetups) {
-        return null;
-      }
-
-      const dateFilter = (meetup) =>
-        this.filter.date === 'all' ||
-        (this.filter.date === 'past' && new Date(meetup.date) <= new Date()) ||
-        (this.filter.date === 'future' && new Date(meetup.date) > new Date());
-
-      const participationFilter = (meetup) =>
-        this.filter.participation === 'all' ||
-        (this.filter.participation === 'organizing' && meetup.organizing) ||
-        (this.filter.participation === 'attending' && meetup.attending);
-
-      const searchFilter = (meetup) =>
-        [meetup.title, meetup.description, meetup.place, meetup.organizer]
-          .join(' ')
-          .toLowerCase()
-          .includes(this.filter.search.toLowerCase());
-
-      return this.meetups.filter((meetup) => dateFilter(meetup) && participationFilter(meetup) && searchFilter(meetup));
-    },
-  },
-
-  mounted() {
-    fetchMeetups().then((meetups) => {
-      this.meetups = meetups;
-    });
-  },
-
-  methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleString(navigator.language, {
+    const formatDate = (date) =>
+      new Date(date).toLocaleString(navigator.language, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
       });
-    },
+
+    return {
+      // data
+      filter,
+      view,
+      dateFilterOptions,
+      // computed
+      filteredMeetups,
+      // methods
+      formatDate,
+    };
   },
 
   template: `
     <ui-container>
       <div class="filters-panel">
         <div class="filters-panel__col">
-          <ui-radio-group v-model="filter.date" :options="$options.dateFilterOptions" name="date" />
+          <ui-radio-group v-model="filter.date" :options="dateFilterOptions" name="date" />
         </div>
 
         <div class="filters-panel__col">
@@ -110,7 +73,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <template v-if="meetups">
+      <template v-if="filteredMeetups">
         <template v-if="filteredMeetups.length">
           <meetups-list v-if="view === 'list'" :meetups="filteredMeetups" />
           <meetups-calendar v-else-if="view === 'calendar'" :meetups="filteredMeetups" />

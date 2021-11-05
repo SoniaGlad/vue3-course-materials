@@ -5,12 +5,6 @@ export function localPropMixin(propName, { propOptions, localName }) {
   const localPropName = localName ?? `${propName}Local`;
 
   return {
-    props: {
-      [propName]: propOptions,
-    },
-
-    emits: [`update:${propName}`],
-
     data() {
       return {
         [localPropName]: null,

@@ -1,33 +1,36 @@
-import { defineComponent } from './vendor/vue.esm-browser.js';
+import { defineComponent, ref } from './vendor/vue.esm-browser.js';
 import UserForm from './UserForm.js';
-import { dateFormattersMixin } from './mixins/dateFormattersMixin.js';
-import { TOASTER_KEY } from './plugins/toaster/index.js';
+import { useDateFormatters } from './composables/useDateFormatters.js';
+import { useToaster } from './composables/useToaster.js';
 
 export default defineComponent({
   name: 'App',
 
   components: { UserForm },
 
-  mixins: [dateFormattersMixin],
+  setup() {
+    const date = ref(new Date().getTime());
+    const user = ref({
+      firstName: 'firstName',
+      lastName: 'lastName',
+    });
+    
+    // Это просто обычные функции. Они не привязаны ни к экземпляру собираемого компонента, ни даже реактивности.
+    // Выделять в composables в целом бессмысленно, за исключением "консистентности".
+    const { formatAsLocalDate, formatAsIsoDate } = useDateFormatters();
+    
+    // В useToaster спрятано его внедрение и импорт ключа
+    const { toast } = useToaster();
 
-  inject: {
-    toaster: TOASTER_KEY,
-  },
+    const handleSubmit = () => toast(user.value);
 
-  data() {
     return {
-      date: new Date().getTime(),
-      user: {
-        firstName: 'firstName',
-        lastName: 'lastName',
-      },
+      date,
+      user,
+      formatAsLocalDate,
+      formatAsIsoDate,
+      handleSubmit,
     };
-  },
-
-  methods: {
-    handleSubmit() {
-      this.toaster.toast(this.user);
-    },
   },
 
   template: `
