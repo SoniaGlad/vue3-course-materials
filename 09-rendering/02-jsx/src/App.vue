@@ -21,17 +21,23 @@ export default {
   },
 
   render() {
-    const counterButton = h(CounterButton, {
-      count: this.count,
-      'onUpdate:count': ($event) => {
-        this.count = $event;
-      },
-    });
+    // const counterButton = h(CounterButton, {
+    //   count: this.count,
+    //   'onUpdate:count': ($event) => {
+    //     this.count = $event;
+    //   },
+    // });
+    //
+    // const content = [h(TextDiv), counterButton];
+    //
+    // // return h(FieldsetComponent, null, () => content);
+    // return h(FieldsetComponent, null, { default: () => content });
 
-    const content = [h(TextDiv), counterButton];
+    const counterButton = <CounterButton vModel={[this.count, 'count']} />;
 
-    // return h(FieldsetComponent, null, () => content);
-    return h(FieldsetComponent, null, { default: () => content });
+    const content = [<TextDiv />, counterButton];
+
+    return <FieldsetComponent>{content}</FieldsetComponent>;
   },
 };
 </script>

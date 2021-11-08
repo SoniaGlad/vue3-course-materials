@@ -17,13 +17,15 @@ export default {
   },
 
   render() {
-    return h(
-      'button',
-      {
-        onClick: () => this.$emit('update:count', this.count + 1),
-      },
-      this.count,
-    );
+    // return h(
+    //   'button',
+    //   {
+    //     onClick: () => this.$emit('update:count', this.count + 1),
+    //   },
+    //   this.count,
+    // );
+
+    return <button onClick={() => this.$emit('update:count', this.count + 1)}>{this.count}</button>;
   },
 };
 </script>

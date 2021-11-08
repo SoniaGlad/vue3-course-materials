@@ -87,7 +87,15 @@ const App = defineComponent({
   template: `<div>
     <h1>App</h1>
 
-    <the-page />
+    <suspense>
+      <template #default>
+        <the-page />
+      </template>
+
+      <template #fallback>
+        Ещё не все асинхронные потомки готовы...
+      </template>
+    </suspense>
   </div>`,
 });
 

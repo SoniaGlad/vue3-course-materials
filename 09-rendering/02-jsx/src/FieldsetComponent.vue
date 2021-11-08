@@ -11,7 +11,8 @@ export default {
   name: 'FieldsetComponent',
 
   render() {
-    return h('fieldset', this.$slots.default());
+    // return h('fieldset', this.$slots.default());
+    return <fieldset>{this.$slots.default()}</fieldset>;
   },
 };
 </script>
