@@ -14,5 +14,16 @@ export default defineComponent({
     };
   },
 
-  template: `<list-view v-model:items="list" />`,
+  template: `
+    <list-view v-model:items="list">
+      <template #form="{ add, newItem, updateNewItem }">
+        <form @submit.prevent="add">
+          <input :value="newItem" @input="updateNewItem($event.target.value)" />
+        </form>
+      </template>
+
+      <template #item="{ item, index, remove }">
+        <a href="#" @click="remove">{{ item }}</a>
+      </template>
+    </list-view>`,
 });

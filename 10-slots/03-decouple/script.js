@@ -43,8 +43,6 @@ const MeetupsView = defineComponent({
 const MeetupsPage = defineComponent({
   name: 'MeetupsPage',
 
-  components: { MeetupsView, MeetupsFilters },
-
   data() {
     return {
       filter: '',
@@ -68,19 +66,21 @@ const MeetupsPage = defineComponent({
 
   template: `
     <div>
-      <meetups-filters v-model:filter="filter" />
-      <meetups-view v-if="meetups" :meetups="filteredMeetups"/>
+      <slot :filter="filter" :update-filter="(value) => filter = value" :meetups="filteredMeetups" />
     </div>`,
 });
 
 const App = defineComponent({
   name: 'App',
 
-  components: { MeetupsPage },
+  components: { MeetupsPage, MeetupsView, MeetupsFilters },
 
   template: `
     <div class="container">
-      <meetups-page />
+      <meetups-page v-slot="{ filter, updateFilter, meetups }">
+        <meetups-filters :filter="filter" @update:filter="updateFilter" />
+        <meetups-view v-if="meetups" :meetups="meetups"/>
+      </meetups-page>
     </div>`,
 });
 

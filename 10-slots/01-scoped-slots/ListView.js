@@ -22,8 +22,8 @@ export default defineComponent({
     items: {
       deep: true,
       immediate: true,
-      handler(newValue) {
-        this.localItems = [...newValue];
+      handler(newItem) {
+        this.localItems = [...newItem];
       },
     },
   },
@@ -43,14 +43,17 @@ export default defineComponent({
 
   template: `
     <div>
-      <form @submit.prevent="add">
-        <input v-model="newItem" />
-        <button>Add</button>
-      </form>
+      <slot name="form" :add="add" :new-item="newItem" :update-new-item="(value) => newItem = value">
+        <form @submit.prevent="handleSubmit">
+          <input v-model="newItem" />
+        </form>
+      </slot>
       <ul>
         <li v-for="(item, index) in localItems">
-          <span>{{ item }}</span>
-          <button @click="remove(index)">x</button>
+          <slot name="item" :item="item" :index="index" :remove="() => remove(index)">
+            <span>{{ item }}</span>
+            <button @click="remove(index)">x</button>
+          </slot>
         </li>
       </ul>
     </div>`,

@@ -1,11 +1,11 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
-import ListView from './ListView.js';
+import RenderlessListView from './RenderlessListView.js';
 
 export default defineComponent({
   name: 'App',
 
   components: {
-    ListView,
+    RenderlessListView,
   },
 
   data() {
@@ -15,15 +15,13 @@ export default defineComponent({
   },
 
   template: `
-    <list-view v-model:items="list">
-      <template #form="{ add, newItem, updateNewItem }">
-        <form @submit.prevent="add">
-          <input :value="newItem" @input="updateNewItem($event.target.value)" />
-        </form>
-      </template>
+    <renderless-list-view v-model:items="list" v-slot="{ items, newItem, updateNewItem, add, remove }">
+      <p>
+        <button v-for="(item, index) in items" :key="item" @click="remove(index)">{{ item }}</button>
+      </p>
 
-      <template #item="{ item, index, remove }">
-        <a href="#" @click="remove">{{ item }}</a>
-      </template>
-    </list-view>`,
+      <form @submit.prevent="add">
+        <input :value="newItem" @change="updateNewItem($event.target.value)" />
+      </form>
+    </renderless-list-view>`,
 });

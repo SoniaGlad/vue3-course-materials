@@ -1,7 +1,7 @@
 import { defineComponent } from './vendor/vue.esm-browser.js';
 
 export default defineComponent({
-  name: 'ListView',
+  name: 'RenderlessListView',
 
   props: {
     items: Array,
@@ -41,20 +41,15 @@ export default defineComponent({
     },
   },
 
-  template: `
-    <div>
-      <slot name="form" :add="add" :new-item="newItem" :update-new-item="(value) => newItem = value">
-        <form @submit.prevent="handleSubmit">
-          <input v-model="newItem" />
-        </form>
-      </slot>
-      <ul>
-        <li v-for="(item, index) in localItems">
-          <slot name="item" :item="item" :index="index" :remove="() => remove(index)">
-            <span>{{ item }}</span>
-            <button @click="remove(index)">x</button>
-          </slot>
-        </li>
-      </ul>
-    </div>`,
+  render() {
+    return this.$slots.default({
+      items: this.localItems,
+      newItem: this.newItem,
+      updateNewItem: (value) => {
+        this.newItem = value;
+      },
+      add: this.add,
+      remove: this.remove,
+    });
+  },
 });
