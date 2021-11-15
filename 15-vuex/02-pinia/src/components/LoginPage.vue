@@ -24,14 +24,18 @@
 
 <script>
 import { ref } from 'vue';
+import { useAuthStore } from '../stores/useAuthStore.js';
 
 export default {
   name: 'LoginPage',
 
   setup() {
+    const authStore = useAuthStore();
     const email = ref('demo@email');
     const password = ref('password');
-    const handleSubmit = () => {};
+    const handleSubmit = () => {
+      authStore.login(email.value, password.value).catch((err) => alert(err.message));
+    };
 
     return {
       email,

@@ -8,6 +8,8 @@
 <script>
 import { computed } from 'vue';
 import LoginPage from './components/LoginPage';
+import { useAuthStore } from './stores/useAuthStore';
+import { storeToRefs } from 'pinia';
 
 export default {
   name: 'App',
@@ -17,9 +19,12 @@ export default {
   },
 
   setup() {
+    const authStore = useAuthStore();
+    const { user, isAuthenticated } = storeToRefs(authStore);
+
     return {
-      user: computed(() => null),
-      isAuthenticated: computed(() => null),
+      user,
+      isAuthenticated,
     };
   },
 };
