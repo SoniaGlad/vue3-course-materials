@@ -12,10 +12,10 @@
     <main id="app"></main>
 
     <script type="module">
-      import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+      import { createApp, defineAsyncComponent, defineComponent } from './vendor/vue.esm-browser.js';
 
-      const Clock = defineComponent({
-        name: 'Clock',
+      const VClock = defineComponent({
+        name: 'VClock',
 
         data() {
           return {
@@ -44,7 +44,25 @@
         template: `#clock-template`,
       });
 
-      const vm = createApp(Clock).mount('#app');
+      const app = createApp({
+        components: {
+          VClock,
+          VClock2: VClock,
+          VClockAsync: defineAsyncComponent(() => import('./VClock.js')),
+        },
+        template: `
+          <div>
+            <v-clock />
+            <v-clock-2 />
+            <v-clock-global />
+            <v-clock-async />
+          </div>
+        `,
+      });
+
+      app.component('v-clock-global', VClock);
+
+      const vm = app.mount('#app');
     </script>
   </body>
 </html>
