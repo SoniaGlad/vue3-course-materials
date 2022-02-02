@@ -1,50 +1,79 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <title></title>
-  </head>
-  <body>
-    <template id="clock-template">
+<html lang='ru'>
+<head>
+  <meta charset='UTF-8' />
+  <title></title>
+</head>
+<body>
+<!--    <template id="clock-template">
       <div>{{ time }}</div>
-    </template>
+    </template>-->
 
-    <main id="app"></main>
+<main id='app'></main>
 
-    <script type="module">
-      import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+<script type='module'>
+  import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+  import AppClock from './AppClock.js';
 
-      const Clock = defineComponent({
-        name: 'Clock',
+  /*const AppClock = defineComponent({
+    name: 'AppClock', // почему name ВНЕ data() ?
 
-        data() {
-          return {
-            time: '',
-            intervalId: null,
-          };
-        },
+    data() {
+      return {
+        time: '',
+        intervalId: null,
+      };
+    },
 
-        created() {
-          this.updateTime();
-          this.intervalId = setInterval(() => {
-            this.updateTime();
-          }, 1000);
-        },
+    created() {
+      this.updateTime();
+      this.intervalId = setInterval(() => {
+        this.updateTime();
+      }, 1000);
+    },
 
-        beforeUnmount() {
-          clearInterval(this.intervalId);
-        },
+    beforeUnmount() {
+      clearInterval(this.intervalId);
+    },
 
-        methods: {
-          updateTime() {
-            this.time = new Date().toLocaleTimeString();
-          },
-        },
+    methods: {
+      updateTime() {
+        this.time = new Date().toLocaleTimeString();
+      },
+    },
 
-        template: `#clock-template`,
-      });
+    template: `
+      <div>{{ time }}</div>`,
+  });*/
 
-      const vm = createApp(Clock).mount('#app');
-    </script>
-  </body>
+  const App = defineComponent({
+    name: 'App',
+
+    /*
+    Локальная реристрация компонента;
+    Регистрируем компонент там, где будем его использовать, например, Часы будем использовать в App, значит в нем локально и регистрируем
+    */
+    components: {
+      AppClock: AppClock,
+    },
+
+    template: `
+      <div class='App'>
+      <!-- camelCase -->
+      <AppClock />
+
+      <!-- kebab-case (лучше этот использовать) -->
+      <app-clock />
+      </div>
+    `,
+  });
+
+  const app = createApp(App);
+
+  // глобальная регистрация компонента, т.е. он может использоваться везде
+  // app.component('app-clock', AppClock);
+
+  const vm = app.mount('#app');
+</script>
+</body>
 </html>
