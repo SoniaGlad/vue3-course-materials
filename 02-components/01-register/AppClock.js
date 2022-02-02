@@ -1,4 +1,4 @@
-import { defineComponent } from './vendor/vue.esm-browser';
+import { defineComponent } from './vendor/vue.esm-browser.js';
 
 export default defineComponent({
   name: 'AppClock', // почему name ВНЕ data() ?

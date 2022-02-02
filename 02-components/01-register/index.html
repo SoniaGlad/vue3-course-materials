@@ -12,7 +12,10 @@
 <main id='app'></main>
 
 <script type='module'>
-  import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+  // import { createApp, defineComponent } from './vendor/vue.esm-browser.js';
+
+  // асинхронная регистрация компонента с помощью defineAsyncComponent
+  import { createApp, defineComponent, defineAsyncComponent } from './vendor/vue.esm-browser.js';
   import AppClock from './AppClock.js';
 
   /*const AppClock = defineComponent({
@@ -49,16 +52,23 @@
   const App = defineComponent({
     name: 'App',
 
-    /*
-    Локальная реристрация компонента;
-    Регистрируем компонент там, где будем его использовать, например, Часы будем использовать в App, значит в нем локально и регистрируем
-    */
+
+    // Локальная реристрация компонента; Регистрируем компонент там, где будем его использовать, например, Часы будем использовать в App, значит в нем локально и регистрируем:
     components: {
-      AppClock: AppClock,
+      // регистрация компонента:
+      // AppClock: AppClock,
+
+      // асинхронная регистрация компонента с помощью defineAsyncComponent, т.е. при рендеринге App, Vue еще не получил AppClock
+      AppClock: defineAsyncComponent(() => Promise.resolve(AppClock)),
+
+      // динамический импорт
+      // AppClock: defineAsyncComponent(() => import(./AppClock.js)),
     },
 
     template: `
       <div class='App'>
+      <span>Clock:</span>
+
       <!-- camelCase -->
       <AppClock />
 
