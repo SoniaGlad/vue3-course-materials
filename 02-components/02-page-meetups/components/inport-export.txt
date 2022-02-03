@@ -1,0 +1,9 @@
+import { createApp, defineComponent } from '../vendor/vue.esm-browser.js';
+
+export default defineComponent({
+  name: 'MeetupsList',
+
+  template: `
+
+  `,
+});
