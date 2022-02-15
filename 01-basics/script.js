@@ -29,6 +29,7 @@ const Root = defineComponent({
         participation: 'all',
         search: '',
       },
+      
       view: 'list', // list | calendar
     };
   },

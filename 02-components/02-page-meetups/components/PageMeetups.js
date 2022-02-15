@@ -2,6 +2,7 @@ import { createApp, defineComponent } from '../vendor/vue.esm-browser.js';
 import MeetupsList from './MeetupsList.js';
 import MeetupsCalendar from './MeetupsCalendar.js';
 import UiButtonGroup from './UiButtonGroup.js';
+import UiRadioGroup from './UiRadioGroup.js';
 
 const fetchMeetups = () => fetch('./api/meetups.json').then((res) => res.json());
 
@@ -12,6 +13,7 @@ export default defineComponent({
     MeetupsList,
     MeetupsCalendar,
     UiButtonGroup,
+    UiRadioGroup,
   },
 
   data() {
@@ -59,41 +61,9 @@ export default defineComponent({
     <div class='container'>
     <div class='filters-panel'>
       <div class='filters-panel__col'>
-        <div class='radio-group'>
-          <div class='radio-group__button'>
-            <input
-              id='radio-buttons_date_all'
-              class='radio-group__input'
-              type='radio'
-              name='date'
-              value='all'
-              v-model='filter.date'
-            />
-            <label for='radio-buttons_date_all' class='radio-group__label'>Все</label>
-          </div>
-          <div class='radio-group__button'>
-            <input
-              id='radio-buttons_date_future'
-              class='radio-group__input'
-              type='radio'
-              name='date'
-              value='past'
-              v-model='filter.date'
-            />
-            <label for='radio-buttons_date_future' class='radio-group__label'>Прошедшие</label>
-          </div>
-          <div class='radio-group__button'>
-            <input
-              id='radio-buttons_date_past'
-              class='radio-group__input'
-              type='radio'
-              name='date'
-              value='future'
-              v-model='filter.date'
-            />
-            <label for='radio-buttons_date_past' class='radio-group__label'>Ожидаемые</label>
-          </div>
-        </div>
+        <ui-radio-group
+          v-model:value='filter.date'
+        />
       </div>
 
       <div class='filters-panel__col'>
@@ -112,7 +82,17 @@ export default defineComponent({
           </div>
         </div>
         <div class='form-group form-group_inline'>
-          <ui-button-group :view='view' @select='view = $event' />
+          <ui-button-group
+            v-model:view='view' />
+          <!-- выше было 1:
+            :view='view'
+            @select='view = $event'
+               затем стало 2:
+            :view='view'
+            @update:view='view = $event'
+               затем 2 объединилось и поменяло на:
+            v-model:view='view'
+          -->
         </div>
       </div>
     </div>
@@ -125,12 +105,5 @@ export default defineComponent({
       <div v-else class='alert'>Митапов по заданным условиям не найдено...</div>
     </template>
     <div v-else class='alert'>Загрузка...</div>
-    </div>
-    <script>
-    import MeetupsCalendar from './MeetupsCalendar';
-
-    export default {
-      components: { MeetupsCalendar },
-    };
-    </script>`,
+    </div>`,
 });

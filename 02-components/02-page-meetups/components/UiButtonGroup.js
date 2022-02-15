@@ -12,17 +12,20 @@ export default defineComponent({
   },
 
   emits: {
-    select: null,
+    // select: null,
+    'update:view': null,
   },
 
   methods: {
     select(value) {
-      this.$emit('select', value);
+      // this.$emit('select', value);
+      this.$emit('update:view', value);
     },
   },
 
   template: `
     <div class='button-group' role='group'>
+
     <button
       type='button'
       class='button-group__button'
@@ -39,6 +42,7 @@ export default defineComponent({
         ></path>
       </svg>
     </button>
+
     <button
       type='button'
       class='button-group__button'
@@ -55,10 +59,10 @@ export default defineComponent({
         ></path>
       </svg>
     </button>
+
     </div>
   `,
-})
-;
+});
 
 
 
