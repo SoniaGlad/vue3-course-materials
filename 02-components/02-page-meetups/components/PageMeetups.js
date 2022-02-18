@@ -118,7 +118,8 @@ export default defineComponent({
     <template v-if='meetups'>
       <template v-if='filteredMeetups.length'>
         <meetups-list v-if='view === "list"' :meetups='filteredMeetups' />
-        <meetups-calendar v-else-if="view === 'calendar'" :meetups='filteredMeetups' />
+        <!-- <meetups-calendar v-else-if="view === 'calendar'" :meetups='filteredMeetups'/> -->
+        <meetups-calendar v-else-if="view === 'calendar'" />
       </template>
       <!-- Ниже выведется дефолтное значение, см. внутри слота в компоненте   -->
       <!-- <ui-alert v-else></ui-alert>   -->

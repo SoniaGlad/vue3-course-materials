@@ -86,11 +86,6 @@ export default defineComponent({
           </div>
         </div>
         </article>-->
-    <script>
-    import UiCard from './UiCard';
 
-    export default {
-      components: { UiCard },
-    };
-    </script>`,
+  `,
 });
