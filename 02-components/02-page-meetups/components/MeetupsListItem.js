@@ -37,6 +37,7 @@ export default defineComponent({
       {{ meetup.title }}
     </template>
 
+    <!-- #default = v-slot:default -->
     <template #default>
       <span v-if='meetup.organizing' class='meetup-card__badge badge badge_success'>Организую</span>
       <span v-if='meetup.attending' class='meetup-card__badge badge badge_primary'>Участвую</span>
