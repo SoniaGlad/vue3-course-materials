@@ -4,51 +4,37 @@ export default defineComponent({
   name: 'UiRadioGroup',
 
   props: {
-    value: {
+    // value:
+    modalValue: {
+      type: String,
+    },
+
+    options: {
+      type: Array,
+    },
+
+    name: {
       type: String,
     },
   },
 
-  emits: ['update:value'],
+  emits: ['update:modalValue'],
 
   template: `
-    <div class='radio-group'>
+    <div v-for='option in options' class='radio-group'>
     <div class='radio-group__button'>
       <input
-        id='radio-buttons_date_all'
+        :id='\`radio-buttons_\${name}_\${option.value}\`'
         class='radio-group__input'
         type='radio'
-        name='date'
-        value='all'
-        :checked='value === "all"'
-        @change='$emit("update:value", $event.target.value)'
+        :name='name'
+        :value='option.value'
+        :checked='modalValue === option.value'
+        @change='$emit("update:modalValue", $event.target.value)'
       />
-      <label for='radio-buttons_date_all' class='radio-group__label'>Все</label>
-    </div>
-    <div class='radio-group__button'>
-      <input
-        id='radio-buttons_date_future'
-        class='radio-group__input'
-        type='radio'
-        name='date'
-        value='past'
-        :checked='value === "past"'
-        @change='$emit("update:value", $event.target.value)'
-      />
-      <label for='radio-buttons_date_future' class='radio-group__label'>Прошедшие</label>
-    </div>
-    <div class='radio-group__button'>
-      <input
-        id='radio-buttons_date_past'
-        class='radio-group__input'
-        type='radio'
-        name='date'
-        value='future'
-        :checked='value === "future"'
-        @change='$emit("update:value", $event.target.value)'
-      />
-      <label for='radio-buttons_date_past' class='radio-group__label'>Ожидаемые</label>
+      <label :for='\`radio-buttons_\${name}_\${option.value}\`' class='radio-group__label'>{{ option.text }}</label>
     </div>
     </div>
   `,
-});
+})
+;
